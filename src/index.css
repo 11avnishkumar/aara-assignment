@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-white/50;
+}
+
+.react-tel-input .form-control {
+  @apply !w-full !px-14 !py-8  text-lg font-semibold placeholder:text-lg placeholder:font-semibold;
+}
