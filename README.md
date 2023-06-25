@@ -1,3 +1,3 @@
 ## Project Demo Link
 
-[Demo](https://github.com/11avnishkumar/aara-assignment)
+[Demo](https://aara-assignment.vercel.app/aara-assignment)
