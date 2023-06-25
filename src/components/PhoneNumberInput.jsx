@@ -17,7 +17,7 @@ const PhoneNumberInput = ({ phoneNumber, setPhoneNumber, setIsSubmitted }) => {
           },
         }
       );
-      console.log(res);
+
       if (res.data.response_code === 200) {
         toast.success(res.data.message);
         setIsSubmitted(true);

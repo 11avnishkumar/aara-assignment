@@ -1,10 +1,12 @@
 import { useState } from "react";
+
 import VerificationInput from "../components/VerificationInput";
 import PhoneNumberInput from "../components/PhoneNumberInput";
 const Home = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+
   return (
     <div className="mt-20 max-w-xl mx-auto">
       <div className="flex flex-col justify-center items-center  p-4 rounded-md h-[80vh]">

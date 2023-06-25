@@ -8,22 +8,29 @@ import App from "./App.jsx";
 import Home from "./pages/Home";
 import Profile from "./components/Profile.jsx";
 import UpdateProfile from "./components/UpdateProfile.jsx";
+import ProfileContext from "./context/ProfileContext";
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    element: <ProfileContext />,
     children: [
       {
         path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/profile",
-        element: <Profile />,
-      },
-      {
-        path: "/update-profile",
-        element: <UpdateProfile />,
+        element: <App />,
+
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+          },
+          {
+            path: "/profile",
+            element: <Profile />,
+          },
+          {
+            path: "/update-profile",
+            element: <UpdateProfile />,
+          },
+        ],
       },
     ],
   },

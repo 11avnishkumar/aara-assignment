@@ -1,44 +1,11 @@
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useGLobalContext } from "../context/ProfileContext";
 export default function Profile() {
-  const [profileData, setProfileData] = useState(null);
+  const { profileData } = useGLobalContext();
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    const getToken = localStorage.getItem("login_token");
-
-    if (getToken === null) navigate("/"); // Navigate to home page if the toke is not found
-
-    const getProfileData = async () => {
-      try {
-        const getProfile = await axios.get(
-          "https://storebh.bhaaraterp.com/api/my-profile/",
-          {
-            headers: {
-              Token: getToken,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        // destructer the useFul data
-        const {
-          data: {
-            data: { profile_data },
-          },
-        } = getProfile;
-        setProfileData(profile_data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getProfileData();
-  }, []);
-  console.log(profileData);
   return (
-    <div className="mt-20 max-w-xl mx-auto">
+    <div className="mt-20 max-w-xl mx-auto px-10 md:px-0 mb-4">
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -46,32 +13,21 @@ export default function Profile() {
           </h2>
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="col-span-full">
-              <div className="mt-2 flex items-center gap-x-3">
+              <div className="mt-2 flex justify-center items-center gap-x-3">
                 {!profileData?.[0].profile_picture ? (
                   <UserCircleIcon
-                    className="h-12 w-12 text-gray-300"
+                    className="h-48 w-48 text-gray-300"
                     aria-hidden="true"
                   />
                 ) : (
-                  <img
-                    src={profileData[0].profile_picture}
-                    alt={profileData[0].first_name}
-                  />
-                )}
-                <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                  <label
-                    htmlFor="photo"
-                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                  >
-                    <span>Change</span>
-                    <input
-                      id="photo"
-                      name="photo"
-                      type="file"
-                      className="sr-only"
+                  <div className="h-48 w-48 overflow-hidden rounded-full">
+                    <img
+                      src={profileData[0].profile_picture}
+                      alt={profileData[0].first_name}
+                      className="h-full w-full object-cover"
                     />
-                  </label>
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -81,9 +37,6 @@ export default function Profile() {
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Personal Information
           </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            Use a permanent address where you can receive mail.
-          </p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
@@ -173,7 +126,7 @@ export default function Profile() {
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <Link
           to={"/update-profile"}
-          className="rounded-md bg-indigo-600 px-3 py-2 text-lg font-semibold text-white  hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="rounded-md bg-indigo-600 px-3 py-2 text-md font-semibold text-white  hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
         >
           Edit Profile
         </Link>

@@ -3,22 +3,25 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { useGLobalContext } from "../context/ProfileContext";
 export default function UpdateProfile() {
+  const { getToken, profileData, updatedGlobalProfile } = useGLobalContext();
   const navigate = useNavigate();
   useEffect(() => {
-    // get the token from the localStorage if Avilable
-    const getToken = localStorage.getItem("login_token");
-    if (getToken === null) navigate("/"); // Navigate to home page if the toke is not found
+    if (getToken === null) navigate("/"); // Navigate to home page
   }, []);
 
   // collect form data
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState(null);
-  const [email, setEmail] = useState("");
-  const [gender, setGender] = useState();
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [firstName, setFirstName] = useState(profileData?.[0].first_name || "");
+  const [lastName, setLastName] = useState(profileData?.[0].last_name || "");
+  const [profilePhoto, setProfilePhoto] = useState(
+    profileData?.[0].profile_picture || null
+  );
+  const [email, setEmail] = useState(profileData?.[0].email || "");
+  const [gender, setGender] = useState(profileData?.[0].gender || "");
+  const [dateOfBirth, setDateOfBirth] = useState(
+    profileData?.[0].date_of_birth || ""
+  );
 
   // handle Profile submitt
   const handleUpdateProfile = async (e) => {
@@ -31,8 +34,6 @@ export default function UpdateProfile() {
     formData.append("date_of_birth", dateOfBirth);
     formData.append("profile_picture", profilePhoto);
     try {
-      const getToken = localStorage.getItem("login_token");
-      if (getToken === null) navigate("/"); // Navigate to home page if the toke is not found
       const res = await axios.post(
         "https://storebh.bhaaraterp.com/api/update-profile/",
         formData,
@@ -43,8 +44,9 @@ export default function UpdateProfile() {
           },
         }
       );
-      console.log(res);
+
       if (res.data.status !== "") {
+        updatedGlobalProfile(); // update the profile
         toast.success(res.data.status);
         navigate("/profile");
       } else {
@@ -55,7 +57,7 @@ export default function UpdateProfile() {
     }
   };
   return (
-    <form className="mt-20 max-w-xl mx-auto">
+    <form className="mt-20 max-w-xl mx-auto px-10 md:px-0 mb-4">
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -63,23 +65,27 @@ export default function UpdateProfile() {
           </h2>
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="col-span-full">
-              <label
-                htmlFor="photo"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Photo
-              </label>
               <div className="mt-2 flex items-center gap-x-3">
-                <UserCircleIcon
-                  className="h-12 w-12 text-gray-300"
-                  aria-hidden="true"
-                />
+                {!profileData?.[0].profile_picture ? (
+                  <UserCircleIcon
+                    className="h-48 w-48 text-gray-300"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <div className="h-48 w-48 overflow-hidden rounded-full">
+                    <img
+                      src={profileData[0].profile_picture}
+                      alt={profileData[0].first_name}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
                 <div className="mt-4 flex justify-center items-center text-sm leading-6 text-gray-600">
                   <label
                     htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                    className="relative cursor-pointer rounded-md  bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
-                    <span>Upload a file</span>
+                    <span className="">Change</span>
                     <input
                       id="file-upload"
                       name="file-upload"
@@ -98,9 +104,6 @@ export default function UpdateProfile() {
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Personal Information
           </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            Use a permanent address where you can receive mail.
-          </p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
