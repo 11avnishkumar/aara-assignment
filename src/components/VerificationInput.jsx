@@ -1,8 +1,9 @@
 import React from "react";
+import OtpInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Button from "../components/Button";
-import OtpInput from "react-otp-input";
+
 import axios from "axios";
 
 const VerificationInput = ({ otp, setOtp, phoneNumber }) => {
@@ -44,9 +45,12 @@ const VerificationInput = ({ otp, setOtp, phoneNumber }) => {
         onChange={setOtp}
         numInputs={6}
         shouldAutoFocus={true}
-        renderSeparator={<span> - </span>}
+        renderSeparator={<span>-</span>}
         renderInput={(props) => <input {...props} />}
-        inputStyle={"px-6 py-6 mb-4 rounded-md w-full block mx-0"}
+        inputType="tel"
+        inputStyle={
+          "mb-4 text-black rounded-md  !w-full !h-full py-4 text-xl block"
+        }
         containerStyle={"w-full flex justify-center items-center"}
       />
       <Button

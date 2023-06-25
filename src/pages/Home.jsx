@@ -21,9 +21,9 @@ const Home = () => {
               />
             ) : (
               <VerificationInput
-                phoneNumber={phoneNumber}
                 otp={otp}
                 setOtp={setOtp}
+                phoneNumber={phoneNumber}
               />
             )}
           </form>
