@@ -14,7 +14,7 @@ const Header = () => {
             to="/profile"
             className="border-2 bg-black text-white border-black p-3 w-38 md:w-48 text-center"
           >
-            Visit Profile
+            Profile
           </Link>
           <span
             onClick={() => logOut()}
