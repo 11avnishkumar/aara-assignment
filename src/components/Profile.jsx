@@ -1,8 +1,13 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { useGLobalContext } from "../context/ProfileContext";
+import { useEffect } from "react";
 export default function Profile() {
-  const { profileData } = useGLobalContext();
+  const { profileData, updatedGlobalProfile } = useGLobalContext();
+
+  useEffect(() => {
+    updatedGlobalProfile(); // fetch profile data
+  }, []);
 
   return (
     <div className="mt-20 max-w-xl mx-auto px-10 md:px-0 mb-4">
